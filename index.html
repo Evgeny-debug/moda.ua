@@ -1,131 +1,1592 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVÀ STYL | Преміум Одяг</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #c5a059; --overlay: rgba(0,0,0,0.5); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NOVA — Преміальна електроніка</title>
+<meta name="description" content="NOVA — преміальний інтернет-магазин електроніки та гаджетів">
 
-        /* Навігація */
-        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
-        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; cursor: pointer; }
-        .nav-icons { display: flex; gap: 20px; align-items: center; }
-        .btn-icon { cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+<!-- Tailwind CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        /* Бічні панелі (Меню та Кошик) */
-        .sidebar { position: fixed; top: 0; right: -350px; width: 350px; height: 100%; background: white; z-index: 1000; padding: 40px; transition: 0.4s; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
-        .sidebar.active { right: 0; }
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay); display: none; z-index: 999; backdrop-filter: blur(5px); }
-        .overlay.active { display: block; }
-        .close-btn { cursor: pointer; margin-bottom: 30px; display: block; text-align: right; font-size: 1.2rem; }
+<style>
+  /* ============ DESIGN TOKENS ============ */
+  :root{
+    --bg-0:#07070b;
+    --bg-1:#0c0d14;
+    --panel:rgba(255,255,255,0.045);
+    --panel-strong:rgba(255,255,255,0.08);
+    --border:rgba(255,255,255,0.09);
+    --border-strong:rgba(255,255,255,0.16);
+    --text-0:#f4f5f8;
+    --text-1:#a9abb8;
+    --text-2:#6b6d7c;
+    --violet:#7c5cfc;
+    --violet-2:#a78bfa;
+    --cyan:#22d3ee;
+    --coral:#ff6b6b;
+    --amber:#ffb648;
+    --grad-brand: linear-gradient(120deg, var(--violet) 0%, #5b8cff 45%, var(--cyan) 100%);
+    --shadow-soft: 0 10px 40px -12px rgba(0,0,0,0.6);
+    --shadow-glow: 0 0 60px -10px rgba(124,92,252,0.35);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --ease: cubic-bezier(.16,1,.3,1);
+  }
 
-        /* Героїчна секція */
-        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=2000'); background-size: cover; color: white; text-align: center; }
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 20px; }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-0);
+    color:var(--text-0);
+    font-family:'Inter',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+  .font-display{font-family:'Space Grotesk',sans-serif;}
 
-        /* Продукти */
-        .section { padding: 80px 5%; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .card { border: 1px solid #f0f0f0; padding: 15px; transition: 0.3s; }
-        .card img { width: 100%; height: 350px; object-fit: cover; }
-        .card h3 { margin: 15px 0 5px; }
-        .btn-add { background: #1a1a1a; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; margin-top: 10px; }
+  ::selection{background:var(--violet); color:#fff;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border-strong); border-radius:10px;}
 
-        /* Футер */
-        footer { padding: 40px; text-align: center; background: #fafafa; border-top: 1px solid #eee; }
-        .evs-credit { margin-top: 10px; font-size: 0.8rem; color: #888; }
-        .evs-credit a { color: var(--accent); font-weight: 600; }
+  :focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:3px;
+    border-radius:6px;
+  }
 
-        @media (max-width: 600px) { .hero h1 { font-size: 2rem; } .sidebar { width: 100%; } }
-    </style>
+  /* ============ ANIMATED MESH BACKGROUND ============ */
+  .mesh-bg{
+    position:fixed; inset:0; z-index:-2; overflow:hidden; background:var(--bg-0);
+  }
+  .mesh-bg::before, .mesh-bg::after{
+    content:''; position:absolute; border-radius:50%; filter:blur(90px); opacity:0.55;
+  }
+  .mesh-bg::before{
+    width:60vw;height:60vw; left:-15vw; top:-20vw;
+    background:radial-gradient(circle at 30% 30%, var(--violet), transparent 70%);
+    animation: driftA 22s var(--ease) infinite alternate;
+  }
+  .mesh-bg::after{
+    width:55vw;height:55vw; right:-15vw; bottom:-15vw;
+    background:radial-gradient(circle at 70% 70%, var(--cyan), transparent 70%);
+    animation: driftB 26s var(--ease) infinite alternate;
+  }
+  .mesh-blob-3{
+    position:absolute; width:40vw; height:40vw; left:35vw; top:20vh; border-radius:50%;
+    background:radial-gradient(circle, #5b8cff, transparent 70%);
+    filter:blur(100px); opacity:0.28; animation: driftC 30s var(--ease) infinite alternate;
+  }
+  .noise-overlay{
+    position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @keyframes driftA{ 0%{transform:translate(0,0) scale(1);} 100%{transform:translate(8vw,10vh) scale(1.15);} }
+  @keyframes driftB{ 0%{transform:translate(0,0) scale(1);} 100%{transform:translate(-6vw,-8vh) scale(1.1);} }
+  @keyframes driftC{ 0%{transform:translate(-5vw,-4vh) scale(0.9);} 100%{transform:translate(5vw,6vh) scale(1.2);} }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ============ GLASS PRIMITIVES ============ */
+  .glass{
+    background:var(--panel);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    border:1px solid var(--border);
+  }
+  .glass-strong{
+    background:var(--panel-strong);
+    backdrop-filter: blur(28px) saturate(160%);
+    -webkit-backdrop-filter: blur(28px) saturate(160%);
+    border:1px solid var(--border-strong);
+  }
+  .glow-border{
+    position:relative;
+  }
+  .glow-border::before{
+    content:''; position:absolute; inset:-1px; border-radius:inherit; padding:1px;
+    background:var(--grad-brand);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity:0; transition:opacity .4s var(--ease);
+    pointer-events:none;
+  }
+  .glow-border:hover::before{opacity:1;}
+
+  .text-gradient{
+    background:var(--grad-brand);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* ============ HEADER ============ */
+  #site-header{
+    transition: box-shadow .4s var(--ease), background .4s var(--ease), border-color .4s var(--ease);
+  }
+  #site-header.scrolled{
+    box-shadow: var(--shadow-soft);
+    border-bottom:1px solid var(--border);
+  }
+
+  .icon-btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:14px;
+    background:var(--panel); border:1px solid var(--border);
+    transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+    position:relative;
+  }
+  .icon-btn:hover{ transform:translateY(-2px); background:var(--panel-strong); border-color:var(--border-strong); }
+  .icon-btn:active{ transform:translateY(0) scale(.96); }
+
+  .badge-pop{
+    position:absolute; top:-6px; right:-6px;
+    min-width:20px; height:20px; padding:0 5px;
+    border-radius:999px; background:var(--grad-brand);
+    font-size:11px; font-weight:700; color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 3px var(--bg-0);
+  }
+  @keyframes badgeBounce{
+    0%{transform:scale(1);} 30%{transform:scale(1.4);} 60%{transform:scale(.9);} 100%{transform:scale(1);}
+  }
+  .badge-bounce{ animation:badgeBounce .5s var(--ease); }
+
+  /* ============ BUTTONS ============ */
+  .btn-primary{
+    background:var(--grad-brand);
+    color:#07070b; font-weight:700;
+    padding:14px 28px; border-radius:16px;
+    position:relative; overflow:hidden;
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    box-shadow: 0 8px 30px -8px rgba(124,92,252,.55);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 40px -8px rgba(124,92,252,.7); }
+  .btn-primary:active{ transform:translateY(0px) scale(.98); }
+
+  .btn-ghost{
+    background:var(--panel); border:1px solid var(--border);
+    padding:14px 28px; border-radius:16px; font-weight:600;
+    transition: all .3s var(--ease);
+  }
+  .btn-ghost:hover{ background:var(--panel-strong); border-color:var(--border-strong); transform:translateY(-2px); }
+
+  /* ripple */
+  .ripple{ position:relative; overflow:hidden; }
+  .ripple-circle{
+    position:absolute; border-radius:50%; background:rgba(255,255,255,0.5);
+    transform:scale(0); animation:rippleAnim .6s linear; pointer-events:none;
+  }
+  @keyframes rippleAnim{ to{ transform:scale(3); opacity:0; } }
+
+  /* ============ CARDS ============ */
+  .product-card{
+    transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+  }
+  .product-card:hover{
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+    border-color: var(--border-strong);
+  }
+  .product-card .card-img{
+    transition: transform .6s var(--ease);
+  }
+  .product-card:hover .card-img{ transform:scale(1.08); }
+
+  .fav-btn{
+    transition: transform .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+  }
+  .fav-btn.active{ color: var(--coral); }
+  .fav-btn:active{ transform:scale(1.3); }
+
+  @keyframes floatY{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+  .float{ animation: floatY 6s ease-in-out infinite; }
+  .float-slow{ animation: floatY 9s ease-in-out infinite; animation-delay:1s;}
+
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);} }
+  .animate-fade-up{ animation: fadeUp .7s var(--ease) both; }
+
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+  .animate-fade{ animation: fadeIn .4s var(--ease) both; }
+
+  @keyframes scaleIn{ from{opacity:0; transform:scale(.96);} to{opacity:1; transform:scale(1);} }
+  .animate-scale{ animation: scaleIn .35s var(--ease) both; }
+
+  /* ============ DRAWERS / OVERLAYS ============ */
+  .drawer{
+    transition: transform .5s var(--ease);
+  }
+  .overlay-bg{
+    background:rgba(4,4,8,0.6);
+    backdrop-filter: blur(4px);
+    transition: opacity .4s var(--ease);
+  }
+
+  /* ============ SEARCH ============ */
+  .search-panel{ transition: opacity .3s var(--ease), transform .3s var(--ease); }
+
+  /* ============ CHIPS ============ */
+  .chip{
+    padding:10px 20px; border-radius:999px; border:1px solid var(--border);
+    background:var(--panel); font-weight:600; font-size:14px; white-space:nowrap;
+    transition: all .3s var(--ease); cursor:pointer;
+  }
+  .chip:hover{ border-color:var(--border-strong); transform:translateY(-2px); }
+  .chip.active{ background:var(--grad-brand); color:#07070b; border-color:transparent; }
+
+  /* ============ TOASTS ============ */
+  #toast-container{ position:fixed; bottom:24px; right:24px; z-index:200; display:flex; flex-direction:column; gap:10px; }
+  @media (max-width: 640px){ #toast-container{ left:16px; right:16px; bottom:96px; } }
+  .toast{
+    min-width:280px; max-width:360px;
+    animation: toastIn .4s var(--ease) both;
+  }
+  .toast.leaving{ animation: toastOut .35s var(--ease) both; }
+  @keyframes toastIn{ from{opacity:0; transform:translateX(40px) scale(.95);} to{opacity:1; transform:translateX(0) scale(1);} }
+  @keyframes toastOut{ from{opacity:1; transform:translateX(0);} to{opacity:0; transform:translateX(40px);} }
+
+  /* ============ SKELETON / LOADER ============ */
+  .skeleton{
+    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 37%, rgba(255,255,255,0.04) 63%);
+    background-size:400% 100%;
+    animation: skeletonWave 1.6s ease-in-out infinite;
+  }
+  @keyframes skeletonWave{ 0%{background-position:100% 50%;} 100%{background-position:0 50%;} }
+
+  .loader-ring{
+    width:52px; height:52px; border-radius:50%;
+    border:3px solid rgba(255,255,255,0.1);
+    border-top-color: var(--cyan);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ============ GALLERY ZOOM ============ */
+  .zoom-wrap{ overflow:hidden; cursor:zoom-in; border-radius:var(--radius-md); }
+  .zoom-img{ transition: transform .35s var(--ease); transform-origin: center; will-change:transform; }
+
+  /* ============ QTY STEPPER ============ */
+  .qty-btn{ transition: background .2s var(--ease), transform .2s var(--ease); }
+  .qty-btn:hover{ background:var(--panel-strong); }
+  .qty-btn:active{ transform:scale(.9); }
+
+  /* ============ BOTTOM NAV (mobile) ============ */
+  #bottom-nav{ transition: transform .4s var(--ease); }
+  .bnav-item{ transition: color .25s var(--ease), transform .25s var(--ease); }
+  .bnav-item.active{ color: var(--cyan); }
+  .bnav-item:active{ transform:scale(.9); }
+
+  /* ============ MISC ============ */
+  .divider{ height:1px; background:linear-gradient(90deg, transparent, var(--border), transparent); }
+  .price-strike{ text-decoration: line-through; color:var(--text-2); }
+  .clamp-2{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .clamp-3{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+  input[type=text], input[type=email], input[type=tel], textarea{
+    background:var(--panel); border:1px solid var(--border); color:var(--text-0);
+    transition: border-color .25s var(--ease), background .25s var(--ease);
+  }
+  input[type=text]:focus, input[type=email]:focus, input[type=tel]:focus, textarea:focus{
+    border-color: var(--violet-2); background:var(--panel-strong); outline:none;
+  }
+  input.field-error{ border-color: var(--coral) !important; }
+
+  .lucide{ width:20px; height:20px; }
+
+  [data-page]{ display:none; }
+  [data-page].active{ display:block; }
+</style>
 </head>
-<body>
+<body class="antialiased">
 
-    <div class="overlay" onclick="closeAll()"></div>
+<div class="mesh-bg"><div class="mesh-blob-3"></div></div>
+<div class="noise-overlay"></div>
 
-    <header>
-        <div class="logo">NOVÀ STYL</div>
-        <div class="nav-icons">
-            <span class="btn-icon" onclick="toggleMenu()">Меню</span>
-            <span class="btn-icon" onclick="toggleCart()">Кошик (0)</span>
-        </div>
-    </header>
-
-    <!-- Меню -->
-    <div id="menu-sidebar" class="sidebar">
-        <span class="close-btn" onclick="toggleMenu()">✕</span>
-        <h2>Навігація</h2>
-        <ul style="list-style: none; margin-top: 30px;">
-            <li style="margin-bottom: 20px;"><a href="#">Нова колекція</a></li>
-            <li style="margin-bottom: 20px;"><a href="#">Жінки</a></li>
-            <li style="margin-bottom: 20px;"><a href="#">Чоловіки</a></li>
-            <li style="margin-bottom: 20px;"><a href="#">Про нас</a></li>
-        </ul>
+<!-- =====================================================
+     HEADER
+====================================================== -->
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 glass">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <button id="btn-menu" class="icon-btn" aria-label="Відкрити меню">
+        <i data-lucide="menu"></i>
+      </button>
+      <a href="#/" class="flex items-center gap-2.5 group" onclick="Router.go('/')">
+        <span class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:var(--grad-brand)">
+          <i data-lucide="zap" class="text-black" style="width:20px;height:20px"></i>
+        </span>
+        <span class="font-display font-bold text-xl tracking-tight hidden sm:block">NOVA</span>
+      </a>
     </div>
 
-    <!-- Кошик -->
-    <div id="cart-sidebar" class="sidebar">
-        <span class="close-btn" onclick="toggleCart()">✕</span>
-        <h2>Ваш кошик</h2>
-        <div style="margin-top: 40px; text-align: center; color: #666;">
-            Кошик порожній
+    <nav class="hidden lg:flex items-center gap-1">
+      <button onclick="Router.go('/')" class="px-4 py-2 rounded-xl font-medium text-sm hover:bg-white/5 transition">Головна</button>
+      <button onclick="Router.go('/catalog')" class="px-4 py-2 rounded-xl font-medium text-sm hover:bg-white/5 transition">Каталог</button>
+      <button onclick="Router.go('/catalog')" class="px-4 py-2 rounded-xl font-medium text-sm hover:bg-white/5 transition">Акції</button>
+      <button onclick="Drawers.openLeft()" class="px-4 py-2 rounded-xl font-medium text-sm hover:bg-white/5 transition">Контакти</button>
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <button id="btn-search" class="icon-btn" aria-label="Пошук">
+        <i data-lucide="search"></i>
+      </button>
+      <button id="btn-favorites" class="icon-btn relative" aria-label="Обране">
+        <i data-lucide="heart"></i>
+        <span id="fav-badge" class="badge-pop hidden">0</span>
+      </button>
+      <button id="btn-cart" class="icon-btn relative" aria-label="Кошик">
+        <i data-lucide="shopping-bag"></i>
+        <span id="cart-badge" class="badge-pop hidden">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- =====================================================
+     LEFT DRAWER
+====================================================== -->
+<div id="left-overlay" class="fixed inset-0 z-[70] overlay-bg opacity-0 pointer-events-none"></div>
+<aside id="left-drawer" class="drawer fixed top-0 left-0 h-full w-[85%] max-w-sm z-[80] glass-strong -translate-x-full">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-6 border-b" style="border-color:var(--border)">
+      <span class="font-display font-bold text-lg">Меню</span>
+      <button onclick="Drawers.closeLeft()" class="icon-btn" aria-label="Закрити меню"><i data-lucide="x"></i></button>
+    </div>
+    <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+      <button onclick="Router.go('/'); Drawers.closeLeft();" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="home"></i><span>Головна</span></button>
+      <button onclick="Router.go('/catalog'); Drawers.closeLeft();" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="grid-3x3"></i><span>Каталог</span></button>
+      <button onclick="Drawers.openCategoriesMobile()" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="layers"></i><span>Категорії</span></button>
+      <button onclick="Router.go('/catalog?discount=1'); Drawers.closeLeft();" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="percent"></i><span>Знижки</span></button>
+      <button onclick="Router.go('/favorites'); Drawers.closeLeft();" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="heart"></i><span>Обране</span></button>
+      <div class="divider my-3"></div>
+      <button onclick="Drawers.openInfo('contacts')" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="phone"></i><span>Контакти</span></button>
+      <button onclick="Drawers.openInfo('about')" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="info"></i><span>Про нас</span></button>
+      <button onclick="Drawers.openInfo('delivery')" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="truck"></i><span>Доставка</span></button>
+      <button onclick="Drawers.openInfo('payment')" class="drawer-link w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-white/5 transition text-left"><i data-lucide="credit-card"></i><span>Оплата</span></button>
+    </nav>
+    <div class="p-6 border-t space-y-4" style="border-color:var(--border)">
+      <div class="flex items-center gap-2 text-sm" style="color:var(--text-1)">
+        <i data-lucide="clock" style="width:16px;height:16px"></i>
+        <span>Пн–Нд: 09:00–21:00</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="https://t.me" target="_blank" rel="noopener" class="icon-btn" aria-label="Telegram"><i data-lucide="send"></i></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener" class="icon-btn" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- =====================================================
+     INFO MODAL (About/Contacts/Delivery/Payment)
+====================================================== -->
+<div id="info-overlay" class="fixed inset-0 z-[95] overlay-bg opacity-0 pointer-events-none flex items-center justify-center p-4">
+  <div id="info-modal" class="glass-strong rounded-[var(--radius-lg)] max-w-md w-full p-8 relative scale-95 opacity-0 transition-all duration-300">
+    <button onclick="Drawers.closeInfo()" class="icon-btn absolute top-5 right-5" aria-label="Закрити"><i data-lucide="x"></i></button>
+    <div id="info-content"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+     SEARCH PANEL
+====================================================== -->
+<div id="search-overlay" class="fixed inset-0 z-[70] overlay-bg opacity-0 pointer-events-none"></div>
+<div id="search-panel" class="search-panel fixed top-0 left-0 right-0 z-[80] glass-strong opacity-0 pointer-events-none -translate-y-4">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+    <div class="flex items-center gap-3">
+      <i data-lucide="search" style="color:var(--text-2)"></i>
+      <input id="search-input" type="text" placeholder="Шукати товари, бренди, категорії..." class="flex-1 bg-transparent border-none outline-none text-lg placeholder:text-[color:var(--text-2)]">
+      <button onclick="Search.close()" class="icon-btn" aria-label="Закрити пошук"><i data-lucide="x"></i></button>
+    </div>
+    <div id="search-results" class="mt-6 max-h-[60vh] overflow-y-auto space-y-2"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+     CART DRAWER (RIGHT)
+====================================================== -->
+<div id="cart-overlay" class="fixed inset-0 z-[70] overlay-bg opacity-0 pointer-events-none"></div>
+<aside id="cart-drawer" class="drawer fixed top-0 right-0 h-full w-[90%] max-w-md z-[80] glass-strong translate-x-full">
+  <div class="flex flex-col h-full">
+    <div class="flex items-center justify-between p-6 border-b" style="border-color:var(--border)">
+      <span class="font-display font-bold text-lg flex items-center gap-2"><i data-lucide="shopping-bag"></i>Кошик</span>
+      <button onclick="Drawers.closeCart()" class="icon-btn" aria-label="Закрити кошик"><i data-lucide="x"></i></button>
+    </div>
+    <div id="cart-items" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+    <div id="cart-summary" class="p-6 border-t space-y-3" style="border-color:var(--border)"></div>
+  </div>
+</aside>
+
+<!-- =====================================================
+     CHECKOUT MODAL
+====================================================== -->
+<div id="checkout-overlay" class="fixed inset-0 z-[95] overlay-bg opacity-0 pointer-events-none flex items-center justify-center p-4">
+  <div id="checkout-modal" class="glass-strong rounded-[var(--radius-lg)] max-w-lg w-full p-6 sm:p-8 relative scale-95 opacity-0 transition-all duration-300 max-h-[92vh] overflow-y-auto">
+    <button onclick="Checkout.close()" class="icon-btn absolute top-5 right-5" aria-label="Закрити оформлення"><i data-lucide="x"></i></button>
+    <div id="checkout-body"></div>
+  </div>
+</div>
+
+<!-- =====================================================
+     TOASTS
+====================================================== -->
+<div id="toast-container"></div>
+
+<!-- =====================================================
+     MAIN — SPA ROOT
+====================================================== -->
+<main id="app" class="relative z-0 pt-20 pb-24 lg:pb-0 min-h-screen">
+
+  <!-- ---------- PAGE: HOME ---------- -->
+  <section data-page="home" class="active">
+
+    <!-- HERO -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-14 sm:pt-20 pb-16">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="animate-fade-up">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 text-sm font-medium">
+            <i data-lucide="sparkles" style="width:16px;height:16px; color:var(--cyan)"></i>
+            <span>Нова колекція вже у продажу</span>
+          </div>
+          <h1 class="font-display font-bold text-5xl sm:text-6xl xl:text-7xl leading-[1.05] tracking-tight mb-6">
+            Технології,<br><span class="text-gradient">що надихають</span>
+          </h1>
+          <p class="text-lg leading-relaxed mb-8 max-w-md" style="color:var(--text-1)">
+            Преміальна електроніка для тих, хто цінує якість, дизайн і деталі. Обирайте з кураторської добірки найкращих гаджетів.
+          </p>
+          <div class="flex flex-wrap gap-4">
+            <button onclick="Router.go('/catalog')" class="btn-primary ripple">Перейти до каталогу</button>
+            <button onclick="Router.go('/catalog?discount=1')" class="btn-ghost">Дивитись акції</button>
+          </div>
+          <div class="grid grid-cols-3 gap-4 mt-12 max-w-md">
+            <div><div class="font-display font-bold text-3xl">12k+</div><div class="text-sm" style="color:var(--text-2)">Клієнтів</div></div>
+            <div><div class="font-display font-bold text-3xl">4.9★</div><div class="text-sm" style="color:var(--text-2)">Рейтинг</div></div>
+            <div><div class="font-display font-bold text-3xl">24/7</div><div class="text-sm" style="color:var(--text-2)">Підтримка</div></div>
+          </div>
         </div>
+
+        <div class="relative h-[420px] sm:h-[520px] hidden md:block">
+          <div class="absolute top-0 right-0 w-72 glass-strong rounded-[var(--radius-lg)] p-5 float shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80&auto=format&fit=crop" alt="MacBook" class="rounded-2xl w-full h-40 object-cover mb-4" loading="lazy">
+            <div class="font-semibold">Ноутбук Pro 14"</div>
+            <div class="text-sm mt-1" style="color:var(--text-2)">від 54 999 ₴</div>
+          </div>
+          <div class="absolute bottom-4 left-0 w-64 glass-strong rounded-[var(--radius-lg)] p-5 float-slow shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80&auto=format&fit=crop" alt="Навушники" class="rounded-2xl w-full h-32 object-cover mb-4" loading="lazy">
+            <div class="font-semibold">Навушники Air</div>
+            <div class="text-sm mt-1" style="color:var(--text-2)">від 8 499 ₴</div>
+          </div>
+          <div class="absolute top-1/3 left-1/3 w-48 glass rounded-[var(--radius-md)] p-4 float shadow-xl" style="animation-delay:2s">
+            <div class="flex items-center gap-2">
+              <i data-lucide="badge-check" style="color:var(--cyan)"></i>
+              <span class="text-sm font-semibold">Гарантія 2 роки</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <section class="hero">
-        <h1>Весна '24</h1>
-        <p>Відкрийте стиль у кожній деталі</p>
-    </section>
-
-    <section class="section">
-        <h2 style="margin-bottom: 40px; font-family: 'Playfair Display';">Бестселери</h2>
-        <div class="grid">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1523381210434-27158be1f536" alt="Товар">
-                <h3>Тренч Класика</h3>
-                <p>3 500 грн</p>
-                <button class="btn-add">Додати в кошик</button>
-            </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b" alt="Товар">
-                <h3>Сукня вечірня</h3>
-                <p>4 200 грн</p>
-                <button class="btn-add">Додати в кошик</button>
-            </div>
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1509635037919-48c906c6b392" alt="Товар">
-                <h3>Піджак Oversize</h3>
-                <p>3 800 грн</p>
-                <button class="btn-add">Додати в кошик</button>
-            </div>
+    <!-- BENEFITS -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="grid sm:grid-cols-3 gap-5">
+        <div class="glass rounded-[var(--radius-md)] p-6 glow-border">
+          <i data-lucide="truck" style="color:var(--cyan)" class="mb-3"></i>
+          <div class="font-semibold mb-1">Швидка доставка</div>
+          <div class="text-sm" style="color:var(--text-2)">По Україні за 1–3 дні</div>
         </div>
-    </section>
-
-    <footer>
-        <p>&copy; 2026 NOVÀ STYL. Всі права захищені.</p>
-        <div class="evs-credit">
-            Розроблено EVS.pro — <a href="https://t.me/evsdev" target="_blank">@evsdev</a>
+        <div class="glass rounded-[var(--radius-md)] p-6 glow-border">
+          <i data-lucide="shield-check" style="color:var(--violet-2)" class="mb-3"></i>
+          <div class="font-semibold mb-1">Офіційна гарантія</div>
+          <div class="text-sm" style="color:var(--text-2)">До 24 місяців на всі товари</div>
         </div>
-    </footer>
+        <div class="glass rounded-[var(--radius-md)] p-6 glow-border">
+          <i data-lucide="rotate-ccw" style="color:var(--amber)" class="mb-3"></i>
+          <div class="font-semibold mb-1">Легке повернення</div>
+          <div class="text-sm" style="color:var(--text-2)">14 днів на обмін чи повернення</div>
+        </div>
+      </div>
+    </div>
 
-    <script>
-        function toggleMenu() {
-            document.getElementById('menu-sidebar').classList.toggle('active');
-            document.querySelector('.overlay').classList.toggle('active');
-        }
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('active');
-            document.querySelector('.overlay').classList.toggle('active');
-        }
-        function closeAll() {
-            document.getElementById('menu-sidebar').classList.remove('active');
-            document.getElementById('cart-sidebar').classList.remove('active');
-            document.querySelector('.overlay').classList.remove('active');
-        }
-    </script>
+    <!-- CATEGORIES -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="flex items-end justify-between mb-6">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl">Категорії</h2>
+      </div>
+      <div id="home-categories" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
+    </div>
+
+    <!-- FEATURED PRODUCTS -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
+      <div class="flex items-end justify-between mb-6">
+        <h2 class="font-display font-bold text-2xl sm:text-3xl">Популярні товари</h2>
+        <button onclick="Router.go('/catalog')" class="text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all" style="color:var(--cyan)">Всі товари <i data-lucide="arrow-right" style="width:16px;height:16px"></i></button>
+      </div>
+      <div id="featured-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    </div>
+
+    <!-- PROMO BANNER -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 pb-20">
+      <div class="relative overflow-hidden rounded-[var(--radius-lg)] glass-strong p-10 sm:p-14 glow-border">
+        <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full" style="background:radial-gradient(circle, var(--violet), transparent 70%); filter:blur(60px); opacity:.5"></div>
+        <div class="relative max-w-lg">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4 text-xs font-bold" style="background:var(--grad-brand); color:#07070b">ОБМЕЖЕНА ПРОПОЗИЦІЯ</div>
+          <h3 class="font-display font-bold text-3xl sm:text-4xl mb-3">До −30% на обрані гаджети</h3>
+          <p class="mb-6" style="color:var(--text-1)">Встигніть придбати преміальну техніку за спеціальними цінами.</p>
+          <button onclick="Router.go('/catalog?discount=1')" class="btn-primary ripple">Переглянути акції</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- PAGE: CATALOG ---------- -->
+  <section data-page="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="flex items-center gap-3 mb-2">
+      <button onclick="Router.go('/')" class="icon-btn"><i data-lucide="arrow-left"></i></button>
+      <h1 class="font-display font-bold text-3xl">Каталог</h1>
+    </div>
+    <p class="mb-6" style="color:var(--text-2)">Знайдіть ідеальний гаджет серед нашої добірки</p>
+
+    <div id="category-chips" class="flex gap-3 overflow-x-auto pb-3 mb-6 -mx-1 px-1"></div>
+
+    <div id="catalog-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    <div id="catalog-empty" class="hidden flex-col items-center text-center py-24">
+      <i data-lucide="search-x" style="width:56px;height:56px; color:var(--text-2)" class="mb-4"></i>
+      <div class="font-display font-bold text-xl mb-2">Нічого не знайдено</div>
+      <p style="color:var(--text-2)">Спробуйте змінити фільтри або пошуковий запит</p>
+    </div>
+  </section>
+
+  <!-- ---------- PAGE: PRODUCT DETAIL (SPA) ---------- -->
+  <section data-page="product" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div id="product-detail"></div>
+    <div class="mt-16">
+      <h3 class="font-display font-bold text-2xl mb-6">Схожі товари</h3>
+      <div id="related-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    </div>
+  </section>
+
+  <!-- ---------- PAGE: FAVORITES ---------- -->
+  <section data-page="favorites" class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="flex items-center gap-3 mb-2">
+      <button onclick="Router.go('/')" class="icon-btn"><i data-lucide="arrow-left"></i></button>
+      <h1 class="font-display font-bold text-3xl flex items-center gap-2"><i data-lucide="heart" style="color:var(--coral)"></i>Обране</h1>
+    </div>
+    <p class="mb-6" style="color:var(--text-2)">Товари, які вам сподобались</p>
+    <div id="favorites-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"></div>
+    <div id="favorites-empty" class="hidden flex-col items-center text-center py-24">
+      <i data-lucide="heart-crack" style="width:56px;height:56px; color:var(--text-2)" class="mb-4"></i>
+      <div class="font-display font-bold text-xl mb-2">Список обраного порожній</div>
+      <p style="color:var(--text-2)" class="mb-6">Додавайте товари, натискаючи на сердечко</p>
+      <button onclick="Router.go('/catalog')" class="btn-primary">До каталогу</button>
+    </div>
+  </section>
+
+  <!-- ---------- PAGE: 404 ---------- -->
+  <section data-page="notfound" class="max-w-7xl mx-auto px-4 sm:px-6 py-32 flex flex-col items-center text-center">
+    <div class="font-display font-bold text-8xl text-gradient mb-4">404</div>
+    <div class="font-display font-bold text-2xl mb-2">Сторінку не знайдено</div>
+    <p class="mb-8" style="color:var(--text-2)">Схоже, такої сторінки не існує або її було переміщено</p>
+    <button onclick="Router.go('/')" class="btn-primary">На головну</button>
+  </section>
+</main>
+
+<!-- =====================================================
+     BOTTOM NAV (mobile)
+====================================================== -->
+<nav id="bottom-nav" class="lg:hidden fixed bottom-0 left-0 right-0 z-50 glass-strong px-2 py-2">
+  <div class="grid grid-cols-4">
+    <button data-nav="home" onclick="Router.go('/')" class="bnav-item flex flex-col items-center gap-1 py-2 rounded-xl"><i data-lucide="home"></i><span class="text-[11px] font-medium">Головна</span></button>
+    <button data-nav="catalog" onclick="Router.go('/catalog')" class="bnav-item flex flex-col items-center gap-1 py-2 rounded-xl"><i data-lucide="grid-3x3"></i><span class="text-[11px] font-medium">Каталог</span></button>
+    <button data-nav="favorites" onclick="Router.go('/favorites')" class="bnav-item flex flex-col items-center gap-1 py-2 rounded-xl"><i data-lucide="heart"></i><span class="text-[11px] font-medium">Обране</span></button>
+    <button data-nav="cart" onclick="Drawers.openCart()" class="bnav-item flex flex-col items-center gap-1 py-2 rounded-xl"><i data-lucide="shopping-bag"></i><span class="text-[11px] font-medium">Кошик</span></button>
+  </div>
+</nav>
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+<footer class="relative z-10 mt-10 glass-strong border-t" style="border-color:var(--border)">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-2.5 mb-4">
+          <span class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:var(--grad-brand)"><i data-lucide="zap" class="text-black" style="width:18px;height:18px"></i></span>
+          <span class="font-display font-bold text-lg">NOVA</span>
+        </div>
+        <p class="text-sm leading-relaxed" style="color:var(--text-2)">Преміальна електроніка та аксесуари для сучасного життя.</p>
+        <div class="flex items-center gap-3 mt-5">
+          <a href="https://t.me" target="_blank" rel="noopener" class="icon-btn" aria-label="Telegram"><i data-lucide="send"></i></a>
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="icon-btn" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-4">Навігація</div>
+        <div class="flex flex-col gap-2.5 text-sm" style="color:var(--text-2)">
+          <button onclick="Router.go('/')" class="text-left hover:text-white transition">Головна</button>
+          <button onclick="Router.go('/catalog')" class="text-left hover:text-white transition">Каталог</button>
+          <button onclick="Router.go('/favorites')" class="text-left hover:text-white transition">Обране</button>
+          <button onclick="Router.go('/catalog?discount=1')" class="text-left hover:text-white transition">Знижки</button>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-4">Інформація</div>
+        <div class="flex flex-col gap-2.5 text-sm" style="color:var(--text-2)">
+          <button onclick="Drawers.openInfo('about')" class="text-left hover:text-white transition">Про нас</button>
+          <button onclick="Drawers.openInfo('delivery')" class="text-left hover:text-white transition">Доставка</button>
+          <button onclick="Drawers.openInfo('payment')" class="text-left hover:text-white transition">Оплата</button>
+          <button onclick="Drawers.openInfo('contacts')" class="text-left hover:text-white transition">Контакти</button>
+        </div>
+      </div>
+      <div>
+        <div class="font-semibold mb-4">Контакти</div>
+        <div class="flex flex-col gap-2.5 text-sm" style="color:var(--text-2)">
+          <span class="flex items-center gap-2"><i data-lucide="phone" style="width:16px;height:16px"></i>+380 (44) 123-45-67</span>
+          <span class="flex items-center gap-2"><i data-lucide="mail" style="width:16px;height:16px"></i>hello@nova.store</span>
+          <span class="flex items-center gap-2"><i data-lucide="map-pin" style="width:16px;height:16px"></i>Київ, вул. Хрещатик, 1</span>
+        </div>
+      </div>
+    </div>
+    <div class="divider my-10"></div>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm" style="color:var(--text-2)">
+      <span>© 2026 NOVA. Усі права захищено.</span>
+      <span>Розробка та дизайн: <a href="https://t.me/evsdev" target="_blank" rel="noopener" class="hover:text-white transition" style="color:var(--text-1)">tg:@evsdev</a> | <span style="color:var(--text-1)">EWS.pro</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   NOVA E-COMMERCE SPA — VANILLA JS ARCHITECTURE
+   Sections: DATA, UTILS, LOCAL STORAGE, RENDER, ROUTER/SPA, DRAWERS,
+             SEARCH, CART, FAVORITES, CHECKOUT, TOASTS, ANIMATIONS, EVENTS, INIT
+========================================================================= */
+
+/* ================= DATA ================= */
+const CATEGORIES = [
+  { id:'laptops', name:'Ноутбуки', icon:'laptop' },
+  { id:'audio', name:'Аудіо', icon:'headphones' },
+  { id:'accessories', name:'Аксесуари', icon:'mouse' },
+  { id:'wearables', name:'Гаджети', icon:'watch' },
+  { id:'phones', name:'Смартфони', icon:'smartphone' },
+  { id:'monitors', name:'Монітори', icon:'monitor' },
+];
+
+const PRODUCTS = [
+  {
+    id:'p1', title:'NOVA Book Pro 14', brand:'NOVA',
+    category:'laptops',
+    description:'Потужний ноутбук для професіоналів із чудовим дисплеєм і тривалою автономністю.',
+    longDescription:'NOVA Book Pro 14 поєднує в собі продуктивний процесор нового покоління, яскравий Liquid Retina дисплей та преміальний алюмінієвий корпус. Ідеальний вибір для розробників, дизайнерів та творчих професіоналів, які цінують швидкість і надійність у щоденній роботі.',
+    price:54999, oldPrice:62999, discount:13, rating:4.8, reviews:214, stock:12,
+    specifications:[
+      {k:'Процесor', v:'8-ядерний, 3.2 ГГц'},
+      {k:'Пам\'ять', v:'16 ГБ уніфікованої пам\'яті'},
+      {k:'Накопичувач', v:'512 ГБ SSD'},
+      {k:'Дисплей', v:'14.2" Liquid Retina XDR'},
+      {k:'Батарея', v:'до 18 годин роботи'},
+      {k:'Вага', v:'1.6 кг'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p2', title:'NOVA Mech Keyboard X', brand:'NOVA',
+    category:'accessories',
+    description:'Механічна клавіатура з тактильними перемикачами та RGB-підсвіткою.',
+    longDescription:'Клавіатура з механічними перемикачами, що забезпечують чіткий тактильний відгук на кожне натискання. Корпус з алюмінієвим верхом, знімний USB-C кабель та повністю настроювана RGB-підсвітка роблять її ідеальною як для роботи, так і для ігор.',
+    price:3499, oldPrice:3999, discount:13, rating:4.7, reviews:158, stock:34,
+    specifications:[
+      {k:'Перемикачі', v:'Механічні, тактильні'},
+      {k:'Підключення', v:'USB-C / Bluetooth 5.1'},
+      {k:'Підсвітка', v:'RGB, 16.7 млн кольорів'},
+      {k:'Розкладка', v:'87 клавіш, TKL'},
+      {k:'Корпус', v:'Алюміній + полікарбонат'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p3', title:'NOVA Precision Mouse', brand:'NOVA',
+    category:'accessories',
+    description:'Ергономічна миша преміум-класу з безшумними кнопками.',
+    longDescription:'Розроблена для точності та комфорту, NOVA Precision Mouse оснащена високоточним оптичним сенсором, безшумними кнопками та ергономічною формою, яка зменшує втому руки навіть під час тривалої роботи.',
+    price:1899, oldPrice:null, discount:0, rating:4.6, reviews:96, stock:48,
+    specifications:[
+      {k:'Сенсор', v:'26000 DPI оптичний'},
+      {k:'Підключення', v:'Bluetooth / USB-C приймач'},
+      {k:'Батарея', v:'до 70 днів'},
+      {k:'Кнопки', v:'Безшумні, 6 програмованих'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1527814050087-3793815479db?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1613141411244-0e4ac259d217?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p4', title:'NOVA Display 27" 4K', brand:'NOVA',
+    category:'monitors',
+    description:'4K-монітор з точною передачею кольору для творчих завдань.',
+    longDescription:'27-дюймовий 4K IPS-монітор з фабричною калібруванням кольору, широким кутом огляду та тонкими рамками. Чудовий вибір для дизайнерів, монтажерів та всіх, хто працює з візуальним контентом.',
+    price:16999, oldPrice:19999, discount:15, rating:4.9, reviews:132, stock:9,
+    specifications:[
+      {k:'Діагональ', v:'27" IPS'},
+      {k:'Роздільність', v:'3840×2160 (4K)'},
+      {k:'Частота оновлення', v:'144 Гц'},
+      {k:'Кольоровий охват', v:'99% DCI-P3'},
+      {k:'Порти', v:'USB-C, HDMI 2.1, DisplayPort'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1586210579191-33b45e38fa2c?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1547082299-de196ea013d6?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p5', title:'NOVA Air Headphones', brand:'NOVA',
+    category:'audio',
+    description:'Бездротові навушники з активним шумозаглушенням.',
+    longDescription:'NOVA Air поєднують глибокий, збалансований звук з ефективним активним шумозаглушенням. М\'які амбушури з пам\'яттю форми забезпечують комфорт навіть під час багатогодинного прослуховування, а швидка зарядка додає 5 годин роботи всього за 10 хвилин.',
+    price:8499, oldPrice:9999, discount:15, rating:4.8, reviews:302, stock:27,
+    specifications:[
+      {k:'Тип', v:'Накладні, бездротові'},
+      {k:'Шумозаглушення', v:'Активне (ANC)'},
+      {k:'Автономність', v:'до 30 годин з ANC'},
+      {k:'Підключення', v:'Bluetooth 5.3'},
+      {k:'Швидка зарядка', v:'10 хв = 5 год роботи'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p6', title:'NOVA Watch Series 5', brand:'NOVA',
+    category:'wearables',
+    description:'Розумний годинник із моніторингом здоров\'я та GPS.',
+    longDescription:'Слідкуйте за своєю активністю, серцевим ритмом та сном за допомогою NOVA Watch Series 5. Яскравий AMOLED-екран, вбудований GPS та захист від води роблять його ідеальним супутником для спорту та повсякденного життя.',
+    price:11999, oldPrice:13499, discount:11, rating:4.7, reviews:187, stock:19,
+    specifications:[
+      {k:'Дисплей', v:'1.9" AMOLED, Always-On'},
+      {k:'Датчики', v:'Пульс, SpO2, ЕКГ, GPS'},
+      {k:'Захист', v:'Водостійкість 5 ATM'},
+      {k:'Автономність', v:'до 4 днів'},
+      {k:'Сумісність', v:'iOS та Android'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p7', title:'NOVA Phone 15 Ultra', brand:'NOVA',
+    category:'phones',
+    description:'Флагманський смартфон із професійною потрійною камерою.',
+    longDescription:'NOVA Phone 15 Ultra — це флагман з титановим корпусом, потужним чипом та потрійною камерою професійного рівня. Величезний динамічний діапазон дисплея та надшвидка зарядка забезпечують бездоганний досвід використання щодня.',
+    price:44999, oldPrice:49999, discount:10, rating:4.9, reviews:412, stock:15,
+    specifications:[
+      {k:'Дисплей', v:'6.7" OLED, 120 Гц'},
+      {k:'Камера', v:'Потрійна, 50 Мп основна'},
+      {k:'Пам\'ять', v:'256 ГБ'},
+      {k:'Батарея', v:'до 29 годин відео'},
+      {k:'Корпус', v:'Титан + сапфірове скло'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1580910051074-3eb694886505?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+  {
+    id:'p8', title:'NOVA Boom Speaker', brand:'NOVA',
+    category:'audio',
+    description:'Портативна колонка з потужним басом та захистом IP67.',
+    longDescription:'Компактна, але потужна портативна колонка з насиченим басом та чистими верхніми частотами. Захист IP67 від пилу та води дозволяє брати її з собою куди завгодно — на пляж, у похід чи на вечірку.',
+    price:4299, oldPrice:4999, discount:14, rating:4.6, reviews:245, stock:41,
+    specifications:[
+      {k:'Потужність', v:'40 Вт'},
+      {k:'Захист', v:'IP67 (пил і вода)'},
+      {k:'Автономність', v:'до 20 годин'},
+      {k:'Підключення', v:'Bluetooth 5.3, AUX'},
+      {k:'Особливість', v:'Парне з\'єднання Stereo'},
+    ],
+    images:[
+      'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1545454675-3531b543be5d?w=1000&q=80&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1589256469067-ea99122bbdc4?w=1000&q=80&auto=format&fit=crop',
+    ]
+  },
+];
+
+/* ================= UTILS ================= */
+const Utils = {
+  formatPrice(n){ return new Intl.NumberFormat('uk-UA').format(n) + ' ₴'; },
+  byId(id){ return PRODUCTS.find(p => p.id === id); },
+  qs(sel, root=document){ return root.querySelector(sel); },
+  qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); },
+  debounce(fn, ms=250){
+    let t; return (...args) => { clearTimeout(t); t = setTimeout(()=>fn(...args), ms); };
+  },
+  starString(rating){
+    const full = Math.round(rating);
+    return '★'.repeat(full) + '☆'.repeat(5-full);
+  },
+  categoryName(id){ const c = CATEGORIES.find(c=>c.id===id); return c ? c.name : id; },
+  ripple(e, el){
+    const circle = document.createElement('span');
+    const rect = el.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    circle.className = 'ripple-circle';
+    circle.style.width = circle.style.height = size + 'px';
+    circle.style.left = (e.clientX - rect.left - size/2) + 'px';
+    circle.style.top = (e.clientY - rect.top - size/2) + 'px';
+    el.appendChild(circle);
+    setTimeout(()=>circle.remove(), 650);
+  },
+  refreshIcons(){ if (window.lucide) lucide.createIcons(); }
+};
+
+/* ================= LOCAL STORAGE ================= */
+const Store = {
+  KEYS:{ CART:'nova_cart', FAV:'nova_favorites' },
+  getCart(){ try{ return JSON.parse(localStorage.getItem(this.KEYS.CART)) || []; }catch(e){ return []; } },
+  setCart(cart){ localStorage.setItem(this.KEYS.CART, JSON.stringify(cart)); },
+  getFav(){ try{ return JSON.parse(localStorage.getItem(this.KEYS.FAV)) || []; }catch(e){ return []; } },
+  setFav(fav){ localStorage.setItem(this.KEYS.FAV, JSON.stringify(fav)); },
+};
+
+/* ================= TOASTS ================= */
+const Toast = {
+  icons:{ success:'check-circle', error:'alert-circle', info:'info', cart:'shopping-bag', heart:'heart' },
+  show(message, type='success'){
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = 'toast glass-strong rounded-2xl px-4 py-3.5 flex items-center gap-3 shadow-2xl';
+    const colorMap = { success:'#4ade80', error:'var(--coral)', info:'var(--cyan)', cart:'var(--violet-2)', heart:'var(--coral)' };
+    el.innerHTML = `
+      <i data-lucide="${this.icons[type]||'info'}" style="color:${colorMap[type]||'var(--cyan)'}; width:20px; height:20px; flex-shrink:0"></i>
+      <span class="text-sm font-medium">${message}</span>
+    `;
+    container.appendChild(el);
+    Utils.refreshIcons();
+    setTimeout(()=>{
+      el.classList.add('leaving');
+      setTimeout(()=>el.remove(), 350);
+    }, 3000);
+  }
+};
+
+/* ================= RENDER ================= */
+const Render = {
+  productCard(p){
+    const isFav = Favorites.has(p.id);
+    const priceHtml = p.discount > 0
+      ? `<span class="font-bold text-lg">${Utils.formatPrice(p.price)}</span>
+         <span class="price-strike text-sm ml-2">${Utils.formatPrice(p.oldPrice)}</span>`
+      : `<span class="font-bold text-lg">${Utils.formatPrice(p.price)}</span>`;
+
+    return `
+    <div class="product-card glass rounded-[var(--radius-md)] overflow-hidden group cursor-pointer" data-id="${p.id}">
+      <div class="relative aspect-square overflow-hidden" onclick="Router.go('/product/${p.id}')">
+        <img src="${p.images[0]}" alt="${p.title}" loading="lazy" class="card-img w-full h-full object-cover">
+        ${p.discount > 0 ? `<span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg text-xs font-bold" style="background:var(--coral); color:#fff">−${p.discount}%</span>` : ''}
+        <button onclick="event.stopPropagation(); Favorites.toggle('${p.id}')" class="fav-btn ${isFav?'active':''} icon-btn absolute top-3 right-3" aria-label="Додати в обране">
+          <i data-lucide="heart" style="width:18px;height:18px" ${isFav?'fill="currentColor"':''}></i>
+        </button>
+      </div>
+      <div class="p-4">
+        <div class="text-xs mb-1" style="color:var(--text-2)">${Utils.categoryName(p.category)}</div>
+        <div onclick="Router.go('/product/${p.id}')" class="font-semibold mb-1.5 clamp-2 leading-snug">${p.title}</div>
+        <div class="flex items-center gap-1.5 text-xs mb-3" style="color:var(--amber)">
+          <span>${Utils.starString(p.rating)}</span>
+          <span style="color:var(--text-2)">(${p.reviews})</span>
+        </div>
+        <div class="flex items-end justify-between">
+          <div>${priceHtml}</div>
+        </div>
+        <button onclick="event.stopPropagation(); Cart.add('${p.id}', 1, this); Utils.ripple(event, this);" class="ripple btn-primary w-full mt-3 !py-2.5 text-sm flex items-center justify-center gap-2">
+          <i data-lucide="shopping-bag" style="width:16px;height:16px"></i>Додати
+        </button>
+      </div>
+    </div>`;
+  },
+
+  grid(container, products){
+    const el = typeof container === 'string' ? document.getElementById(container) : container;
+    if (!el) return;
+    if (products.length === 0){ el.innerHTML = ''; return; }
+    el.innerHTML = products.map((p,i) => `<div class="animate-fade-up" style="animation-delay:${i*0.05}s">${this.productCard(p)}</div>`).join('');
+    Utils.refreshIcons();
+  },
+
+  categoriesHome(){
+    const el = document.getElementById('home-categories');
+    const icons = { laptops:'laptop', audio:'headphones', accessories:'mouse', wearables:'watch', phones:'smartphone', monitors:'monitor' };
+    el.innerHTML = CATEGORIES.map(c => `
+      <button onclick="Router.go('/catalog?cat=${c.id}')" class="glass rounded-[var(--radius-md)] p-6 flex flex-col items-center gap-3 hover:-translate-y-1 transition glow-border">
+        <i data-lucide="${icons[c.id]}" style="width:28px;height:28px; color:var(--cyan)"></i>
+        <span class="font-medium text-sm">${c.name}</span>
+      </button>
+    `).join('');
+    Utils.refreshIcons();
+  },
+
+  categoryChips(activeCat){
+    const el = document.getElementById('category-chips');
+    const all = [{id:'', name:'Всі товари'}, ...CATEGORIES];
+    el.innerHTML = all.map(c => `<button class="chip ${activeCat===c.id ? 'active':''}" onclick="Catalog.setCategory('${c.id}')">${c.name}</button>`).join('');
+  },
+
+  productDetail(p){
+    const el = document.getElementById('product-detail');
+    const isFav = Favorites.has(p.id);
+    el.innerHTML = `
+      <button onclick="Router.go('/catalog')" class="icon-btn mb-6"><i data-lucide="arrow-left"></i></button>
+      <div class="grid lg:grid-cols-2 gap-10 animate-fade-up">
+        <div>
+          <div class="zoom-wrap glass rounded-[var(--radius-lg)] mb-4" id="zoom-wrap">
+            <img id="main-gallery-img" src="${p.images[0]}" alt="${p.title}" class="zoom-img w-full aspect-square object-cover">
+          </div>
+          <div class="flex gap-3">
+            ${p.images.map((img,i)=>`
+              <button onclick="ProductPage.setImage(${i})" data-thumb="${i}" class="thumb-btn glass rounded-xl overflow-hidden w-20 h-20 flex-shrink-0 ${i===0?'ring-2':''}" style="${i===0?'--tw-ring-color:var(--cyan)':''}">
+                <img src="${img}" class="w-full h-full object-cover" alt="Мініатюра ${i+1}">
+              </button>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="text-sm mb-2" style="color:var(--text-2)">${p.brand} • ${Utils.categoryName(p.category)}</div>
+          <h1 class="font-display font-bold text-3xl sm:text-4xl mb-3">${p.title}</h1>
+          <div class="flex items-center gap-3 mb-5">
+            <span style="color:var(--amber)">${Utils.starString(p.rating)}</span>
+            <span class="text-sm" style="color:var(--text-2)">${p.rating} (${p.reviews} відгуків)</span>
+            <span class="text-sm flex items-center gap-1" style="color:${p.stock>0?'#4ade80':'var(--coral)'}">
+              <i data-lucide="circle" style="width:8px;height:8px" fill="currentColor"></i>${p.stock>0?`В наявності: ${p.stock}`:'Немає в наявності'}
+            </span>
+          </div>
+          <div class="flex items-end gap-3 mb-6">
+            <span class="font-display font-bold text-4xl">${Utils.formatPrice(p.price)}</span>
+            ${p.discount>0?`<span class="price-strike text-lg mb-1">${Utils.formatPrice(p.oldPrice)}</span><span class="px-2.5 py-1 rounded-lg text-xs font-bold mb-1.5" style="background:var(--coral); color:#fff">−${p.discount}%</span>`:''}
+          </div>
+          <p class="leading-relaxed mb-6" style="color:var(--text-1)">${p.longDescription}</p>
+
+          <div class="flex items-center gap-4 mb-6">
+            <span class="font-medium text-sm">Кількість:</span>
+            <div class="flex items-center glass rounded-xl overflow-hidden">
+              <button onclick="ProductPage.changeQty(-1)" class="qty-btn w-11 h-11 flex items-center justify-center" aria-label="Зменшити"><i data-lucide="minus" style="width:16px;height:16px"></i></button>
+              <span id="pd-qty" class="w-12 text-center font-semibold">1</span>
+              <button onclick="ProductPage.changeQty(1)" class="qty-btn w-11 h-11 flex items-center justify-center" aria-label="Збільшити"><i data-lucide="plus" style="width:16px;height:16px"></i></button>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 mb-8">
+            <button onclick="ProductPage.addToCart('${p.id}', this); Utils.ripple(event, this);" class="ripple btn-primary flex-1 flex items-center justify-center gap-2 min-w-[200px]" ${p.stock===0?'disabled style="opacity:.5;cursor:not-allowed"':''}>
+              <i data-lucide="shopping-bag" style="width:18px;height:18px"></i>Додати в кошик
+            </button>
+            <button onclick="Favorites.toggle('${p.id}')" id="pd-fav-btn" class="fav-btn ${isFav?'active':''} icon-btn !w-14 !h-14"><i data-lucide="heart" ${isFav?'fill="currentColor"':''}></i></button>
+            <button onclick="ProductPage.share('${p.id}')" class="icon-btn !w-14 !h-14" aria-label="Поділитись"><i data-lucide="share-2"></i></button>
+          </div>
+
+          <div class="glass rounded-[var(--radius-md)] p-5">
+            <div class="font-semibold mb-3">Характеристики</div>
+            <div class="space-y-2.5">
+              ${p.specifications.map(s => `
+                <div class="flex items-center justify-between text-sm py-1.5 border-b" style="border-color:var(--border)">
+                  <span style="color:var(--text-2)">${s.k}</span>
+                  <span class="font-medium text-right">${s.v}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    Utils.refreshIcons();
+  }
+};
+
+/* ================= FAVORITES ================= */
+const Favorites = {
+  list: Store.getFav(),
+  has(id){ return this.list.includes(id); },
+  toggle(id){
+    if (this.has(id)){
+      this.list = this.list.filter(x => x !== id);
+      Toast.show('Видалено з обраного', 'info');
+    } else {
+      this.list.push(id);
+      Toast.show('Додано в обране', 'heart');
+    }
+    Store.setFav(this.list);
+    this.updateBadge();
+    Render.grid('featured-grid', PRODUCTS.slice(0,4));
+    if (Router.current.path === '/catalog') Catalog.render();
+    if (Router.current.path === '/favorites') FavoritesPage.render();
+    if (Router.current.path.startsWith('/product/')){
+      const btn = document.getElementById('pd-fav-btn');
+      if (btn) btn.classList.toggle('active', this.has(id));
+      const icon = btn ? btn.querySelector('i') : null;
+      if (icon) this.has(id) ? icon.setAttribute('fill','currentColor') : icon.removeAttribute('fill');
+    }
+  },
+  updateBadge(){
+    const badge = document.getElementById('fav-badge');
+    badge.textContent = this.list.length;
+    badge.classList.toggle('hidden', this.list.length === 0);
+  }
+};
+
+const FavoritesPage = {
+  render(){
+    const products = PRODUCTS.filter(p => Favorites.has(p.id));
+    Render.grid('favorites-grid', products);
+    document.getElementById('favorites-empty').classList.toggle('flex', products.length===0);
+    document.getElementById('favorites-empty').classList.toggle('hidden', products.length>0);
+  }
+};
+
+/* ================= CART ================= */
+const Cart = {
+  items: Store.getCart(),
+
+  add(id, qty=1, sourceEl=null){
+    const existing = this.items.find(i => i.id === id);
+    if (existing){ existing.qty += qty; } else { this.items.push({ id, qty }); }
+    Store.setCart(this.items);
+    this.updateBadge(true);
+    Cart.renderDrawer();
+    const p = Utils.byId(id);
+    Toast.show(`«${p.title}» додано в кошик`, 'cart');
+  },
+  remove(id){
+    this.items = this.items.filter(i => i.id !== id);
+    Store.setCart(this.items);
+    this.updateBadge();
+    this.renderDrawer();
+    Toast.show('Товар видалено з кошика', 'info');
+  },
+  setQty(id, qty){
+    const item = this.items.find(i => i.id === id);
+    if (!item) return;
+    item.qty = Math.max(1, qty);
+    Store.setCart(this.items);
+    this.updateBadge();
+    this.renderDrawer();
+  },
+  count(){ return this.items.reduce((a,i)=>a+i.qty, 0); },
+  subtotal(){ return this.items.reduce((a,i)=>{ const p = Utils.byId(i.id); return a + (p ? p.price*i.qty : 0); }, 0); },
+  savings(){ return this.items.reduce((a,i)=>{ const p = Utils.byId(i.id); return a + (p && p.oldPrice ? (p.oldPrice-p.price)*i.qty : 0); }, 0); },
+  deliveryFee(){ const sub = this.subtotal(); return sub === 0 || sub >= 3000 ? 0 : 149; },
+  total(){ return this.subtotal() + this.deliveryFee(); },
+
+  updateBadge(bounce=false){
+    const badge = document.getElementById('cart-badge');
+    const n = this.count();
+    badge.textContent = n;
+    badge.classList.toggle('hidden', n === 0);
+    if (bounce){ badge.classList.remove('badge-bounce'); void badge.offsetWidth; badge.classList.add('badge-bounce'); }
+  },
+
+  renderDrawer(){
+    const itemsEl = document.getElementById('cart-items');
+    const summaryEl = document.getElementById('cart-summary');
+
+    if (this.items.length === 0){
+      itemsEl.innerHTML = `
+        <div class="flex flex-col items-center text-center py-20">
+          <i data-lucide="shopping-bag" style="width:56px;height:56px; color:var(--text-2)" class="mb-4"></i>
+          <div class="font-display font-bold text-lg mb-2">Кошик порожній</div>
+          <p class="text-sm mb-6" style="color:var(--text-2)">Додайте товари, щоб оформити замовлення</p>
+          <button onclick="Drawers.closeCart(); Router.go('/catalog');" class="btn-primary">До каталогу</button>
+        </div>`;
+      summaryEl.innerHTML = '';
+      Utils.refreshIcons();
+      return;
+    }
+
+    itemsEl.innerHTML = this.items.map(item => {
+      const p = Utils.byId(item.id);
+      if (!p) return '';
+      return `
+      <div class="glass rounded-xl p-3 flex gap-3 animate-fade">
+        <img src="${p.images[0]}" alt="${p.title}" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between gap-2">
+            <div class="font-medium text-sm clamp-2">${p.title}</div>
+            <button onclick="Cart.remove('${p.id}')" class="icon-btn !w-8 !h-8 flex-shrink-0" aria-label="Видалити"><i data-lucide="trash-2" style="width:14px;height:14px"></i></button>
+          </div>
+          <div class="flex items-center justify-between mt-2">
+            <div class="flex items-center glass rounded-lg overflow-hidden">
+              <button onclick="Cart.setQty('${p.id}', ${item.qty-1})" class="qty-btn w-8 h-8 flex items-center justify-center"><i data-lucide="minus" style="width:12px;height:12px"></i></button>
+              <span class="w-8 text-center text-sm font-semibold">${item.qty}</span>
+              <button onclick="Cart.setQty('${p.id}', ${item.qty+1})" class="qty-btn w-8 h-8 flex items-center justify-center"><i data-lucide="plus" style="width:12px;height:12px"></i></button>
+            </div>
+            <span class="font-bold text-sm">${Utils.formatPrice(p.price*item.qty)}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const savings = this.savings();
+    const delivery = this.deliveryFee();
+    summaryEl.innerHTML = `
+      <div class="flex justify-between text-sm"><span style="color:var(--text-2)">Проміжна сума</span><span class="font-medium">${Utils.formatPrice(this.subtotal())}</span></div>
+      ${savings>0?`<div class="flex justify-between text-sm"><span style="color:var(--text-2)">Ви заощадили</span><span class="font-medium" style="color:#4ade80">−${Utils.formatPrice(savings)}</span></div>`:''}
+      <div class="flex justify-between text-sm"><span style="color:var(--text-2)">Доставка</span><span class="font-medium">${delivery===0?'Безкоштовно':Utils.formatPrice(delivery)}</span></div>
+      <div class="divider my-1"></div>
+      <div class="flex justify-between items-center"><span class="font-semibold">Разом</span><span class="font-display font-bold text-xl">${Utils.formatPrice(this.total())}</span></div>
+      <button onclick="Checkout.open()" class="btn-primary w-full mt-2 flex items-center justify-center gap-2"><i data-lucide="lock" style="width:16px;height:16px"></i>Оформити замовлення</button>
+    `;
+    Utils.refreshIcons();
+  }
+};
+
+/* ================= CHECKOUT ================= */
+const Checkout = {
+  open(){
+    if (Cart.items.length === 0) return;
+    Drawers.closeCart();
+    this.renderForm();
+    const overlay = document.getElementById('checkout-overlay');
+    const modal = document.getElementById('checkout-modal');
+    overlay.classList.remove('pointer-events-none');
+    requestAnimationFrame(()=>{
+      overlay.style.opacity = '1';
+      modal.classList.remove('scale-95','opacity-0');
+    });
+  },
+  close(){
+    const overlay = document.getElementById('checkout-overlay');
+    const modal = document.getElementById('checkout-modal');
+    overlay.style.opacity = '0';
+    modal.classList.add('scale-95','opacity-0');
+    setTimeout(()=> overlay.classList.add('pointer-events-none'), 300);
+  },
+  renderForm(){
+    const body = document.getElementById('checkout-body');
+    body.innerHTML = `
+      <h2 class="font-display font-bold text-2xl mb-1">Оформлення замовлення</h2>
+      <p class="text-sm mb-6" style="color:var(--text-2)">Заповніть дані для доставки</p>
+      <form id="checkout-form" class="space-y-4" novalidate>
+        <div>
+          <label class="text-sm font-medium mb-1.5 block">Ім'я та прізвище</label>
+          <input type="text" id="ck-name" placeholder="Олена Коваленко" class="w-full rounded-xl px-4 py-3">
+          <div class="text-xs mt-1 hidden" data-error-for="ck-name" style="color:var(--coral)">Вкажіть ваше ім'я</div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Телефон</label>
+            <input type="tel" id="ck-phone" placeholder="+380 XX XXX XX XX" class="w-full rounded-xl px-4 py-3">
+            <div class="text-xs mt-1 hidden" data-error-for="ck-phone" style="color:var(--coral)">Введіть коректний номер</div>
+          </div>
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Email</label>
+            <input type="email" id="ck-email" placeholder="mail@example.com" class="w-full rounded-xl px-4 py-3">
+            <div class="text-xs mt-1 hidden" data-error-for="ck-email" style="color:var(--coral)">Введіть коректний email</div>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Місто</label>
+            <input type="text" id="ck-city" placeholder="Київ" class="w-full rounded-xl px-4 py-3">
+            <div class="text-xs mt-1 hidden" data-error-for="ck-city" style="color:var(--coral)">Вкажіть місто</div>
+          </div>
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Адреса / відділення</label>
+            <input type="text" id="ck-address" placeholder="Відділення №1" class="w-full rounded-xl px-4 py-3">
+            <div class="text-xs mt-1 hidden" data-error-for="ck-address" style="color:var(--coral)">Вкажіть адресу</div>
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-medium mb-1.5 block">Коментар до замовлення (необов'язково)</label>
+          <textarea id="ck-comment" rows="3" placeholder="Наприклад, зручний час доставки" class="w-full rounded-xl px-4 py-3 resize-none"></textarea>
+        </div>
+        <div class="glass rounded-xl p-4 flex justify-between items-center">
+          <span class="text-sm" style="color:var(--text-2)">До сплати</span>
+          <span class="font-display font-bold text-xl">${Utils.formatPrice(Cart.total())}</span>
+        </div>
+        <button type="submit" class="btn-primary w-full flex items-center justify-center gap-2">
+          <i data-lucide="check-circle" style="width:18px;height:18px"></i>Підтвердити замовлення
+        </button>
+      </form>
+    `;
+    Utils.refreshIcons();
+    document.getElementById('checkout-form').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      this.validateAndSubmit();
+    });
+  },
+  validateAndSubmit(){
+    let valid = true;
+    const fields = {
+      'ck-name': v => v.trim().length >= 2,
+      'ck-phone': v => /^[\d\s\+\-\(\)]{7,}$/.test(v.trim()),
+      'ck-email': v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+      'ck-city': v => v.trim().length >= 2,
+      'ck-address': v => v.trim().length >= 2,
+    };
+    Object.entries(fields).forEach(([id, test]) => {
+      const input = document.getElementById(id);
+      const errorEl = document.querySelector(`[data-error-for="${id}"]`);
+      const ok = test(input.value);
+      input.classList.toggle('field-error', !ok);
+      if (errorEl) errorEl.classList.toggle('hidden', ok);
+      if (!ok) valid = false;
+    });
+    if (!valid){
+      Toast.show('Перевірте правильність заповнення полів', 'error');
+      return;
+    }
+    this.showSuccess();
+  },
+  showSuccess(){
+    const body = document.getElementById('checkout-body');
+    body.innerHTML = `
+      <div class="flex flex-col items-center text-center py-8 animate-scale">
+        <div class="w-20 h-20 rounded-full flex items-center justify-center mb-6" style="background:var(--grad-brand)">
+          <i data-lucide="check" style="width:40px;height:40px; color:#07070b"></i>
+        </div>
+        <h2 class="font-display font-bold text-2xl mb-2">Замовлення прийнято!</h2>
+        <p class="mb-6" style="color:var(--text-1)">Дякуємо за покупку. Наш менеджер зв'яжеться з вами найближчим часом для підтвердження замовлення.</p>
+        <button onclick="Checkout.finish()" class="btn-primary">Чудово!</button>
+      </div>
+    `;
+    Utils.refreshIcons();
+    Toast.show('Замовлення успішно оформлено', 'success');
+  },
+  finish(){
+    Cart.items = [];
+    Store.setCart([]);
+    Cart.updateBadge();
+    Cart.renderDrawer();
+    this.close();
+  }
+};
+
+/* ================= SEARCH ================= */
+const Search = {
+  open(){
+    const overlay = document.getElementById('search-overlay');
+    const panel = document.getElementById('search-panel');
+    overlay.classList.remove('pointer-events-none');
+    panel.classList.remove('pointer-events-none');
+    requestAnimationFrame(()=>{
+      overlay.style.opacity = '1';
+      panel.style.opacity = '1';
+      panel.style.transform = 'translateY(0)';
+    });
+    setTimeout(()=> document.getElementById('search-input').focus(), 350);
+    this.renderResults('');
+  },
+  close(){
+    const overlay = document.getElementById('search-overlay');
+    const panel = document.getElementById('search-panel');
+    overlay.style.opacity = '0';
+    panel.style.opacity = '0';
+    panel.style.transform = 'translateY(-16px)';
+    setTimeout(()=>{ overlay.classList.add('pointer-events-none'); panel.classList.add('pointer-events-none'); }, 300);
+    document.getElementById('search-input').value = '';
+  },
+  renderResults(query){
+    const el = document.getElementById('search-results');
+    const q = query.trim().toLowerCase();
+    if (q === ''){
+      el.innerHTML = `<div class="text-sm px-2" style="color:var(--text-2)">Почніть вводити, щоб знайти товари...</div>`;
+      return;
+    }
+    const results = PRODUCTS.filter(p =>
+      p.title.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q) ||
+      Utils.categoryName(p.category).toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    );
+    if (results.length === 0){
+      el.innerHTML = `<div class="text-sm px-2 flex items-center gap-2" style="color:var(--text-2)"><i data-lucide="search-x" style="width:16px;height:16px"></i>Нічого не знайдено за запитом «${query}»</div>`;
+      Utils.refreshIcons();
+      return;
+    }
+    el.innerHTML = results.map(p => `
+      <button onclick="Router.go('/product/${p.id}'); Search.close();" class="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition text-left animate-fade">
+        <img src="${p.images[0]}" class="w-12 h-12 rounded-lg object-cover" alt="${p.title}">
+        <div class="flex-1 min-w-0">
+          <div class="font-medium text-sm truncate">${p.title}</div>
+          <div class="text-xs" style="color:var(--text-2)">${Utils.categoryName(p.category)}</div>
+        </div>
+        <span class="font-semibold text-sm">${Utils.formatPrice(p.price)}</span>
+      </button>
+    `).join('');
+    Utils.refreshIcons();
+  }
+};
+
+/* ================= CATALOG PAGE ================= */
+const Catalog = {
+  activeCategory:'', showDiscountOnly:false,
+  setCategory(cat){
+    this.activeCategory = cat;
+    Render.categoryChips(cat);
+    this.render();
+  },
+  render(){
+    let list = PRODUCTS.slice();
+    if (this.activeCategory) list = list.filter(p => p.category === this.activeCategory);
+    if (this.showDiscountOnly) list = list.filter(p => p.discount > 0);
+    Render.grid('catalog-grid', list);
+    document.getElementById('catalog-empty').classList.toggle('hidden', list.length>0);
+    document.getElementById('catalog-empty').classList.toggle('flex', list.length===0);
+  }
+};
+
+/* ================= PRODUCT PAGE ================= */
+const ProductPage = {
+  currentQty:1,
+  render(id){
+    const p = Utils.byId(id);
+    if (!p){ Router.go('/404'); return; }
+    this.currentQty = 1;
+    Render.productDetail(p);
+    const related = PRODUCTS.filter(x => x.category === p.category && x.id !== p.id).slice(0,4);
+    Render.grid('related-grid', related.length ? related : PRODUCTS.filter(x=>x.id!==p.id).slice(0,4));
+    window.scrollTo({ top:0, behavior:'instant' in window ? 'instant' : 'auto' });
+    this.bindZoom();
+  },
+  setImage(i){
+    const p = Utils.byId(Router.current.params.id);
+    document.getElementById('main-gallery-img').src = p.images[i];
+    Utils.qsa('.thumb-btn').forEach((btn,idx)=>{
+      btn.classList.toggle('ring-2', idx===i);
+      btn.style.setProperty('--tw-ring-color', idx===i ? 'var(--cyan)' : '');
+    });
+  },
+  changeQty(delta){
+    this.currentQty = Math.max(1, this.currentQty + delta);
+    document.getElementById('pd-qty').textContent = this.currentQty;
+  },
+  addToCart(id, el){
+    Cart.add(id, this.currentQty, el);
+  },
+  share(id){
+    const url = `${location.origin}${location.pathname}#/product/${id}`;
+    if (navigator.share){
+      navigator.share({ title:'NOVA', url }).catch(()=>{});
+    } else if (navigator.clipboard){
+      navigator.clipboard.writeText(url).then(()=> Toast.show('Посилання скопійовано', 'info'));
+    } else {
+      Toast.show('Посилання: ' + url, 'info');
+    }
+  },
+  bindZoom(){
+    const wrap = document.getElementById('zoom-wrap');
+    const img = document.getElementById('main-gallery-img');
+    if (!wrap || !img) return;
+    wrap.onmousemove = (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      img.style.transformOrigin = `${x}% ${y}%`;
+      img.style.transform = 'scale(1.6)';
+    };
+    wrap.onmouseleave = () => { img.style.transform = 'scale(1)'; };
+  }
+};
+
+/* ================= DRAWERS ================= */
+const Drawers = {
+  openLeft(){
+    document.getElementById('left-overlay').classList.remove('pointer-events-none');
+    requestAnimationFrame(()=>{
+      document.getElementById('left-overlay').style.opacity = '1';
+      document.getElementById('left-drawer').style.transform = 'translateX(0)';
+    });
+  },
+  closeLeft(){
+    document.getElementById('left-overlay').style.opacity = '0';
+    document.getElementById('left-drawer').style.transform = 'translateX(-100%)';
+    setTimeout(()=> document.getElementById('left-overlay').classList.add('pointer-events-none'), 400);
+  },
+  openCategoriesMobile(){
+    this.closeLeft();
+    Router.go('/catalog');
+  },
+  openCart(){
+    document.getElementById('cart-overlay').classList.remove('pointer-events-none');
+    requestAnimationFrame(()=>{
+      document.getElementById('cart-overlay').style.opacity = '1';
+      document.getElementById('cart-drawer').style.transform = 'translateX(0)';
+    });
+    Cart.renderDrawer();
+  },
+  closeCart(){
+    document.getElementById('cart-overlay').style.opacity = '0';
+    document.getElementById('cart-drawer').style.transform = 'translateX(100%)';
+    setTimeout(()=> document.getElementById('cart-overlay').classList.add('pointer-events-none'), 400);
+  },
+  infoContent:{
+    about:{ icon:'info', title:'Про нас', text:'NOVA — це магазин преміальної електроніки, який з 2019 року допомагає клієнтам обирати найкращі гаджети для роботи, творчості та життя. Ми ретельно тестуємо кожен товар перед тим, як він потрапляє у наш каталог.' },
+    delivery:{ icon:'truck', title:'Доставка', text:'Доставляємо по всій Україні Новою Поштою та кур\'єром за 1–3 робочі дні. Безкоштовна доставка при замовленні від 3000 ₴. Самовивіз доступний з нашого шоуруму в Києві.' },
+    payment:{ icon:'credit-card', title:'Оплата', text:'Приймаємо оплату карткою онлайн, накладеним платежем при отриманні, а також через Apple Pay та Google Pay. Усі платежі захищені сучасним шифруванням.' },
+    contacts:{ icon:'phone', title:'Контакти', text:'Телефон: +380 (44) 123-45-67\nEmail: hello@nova.store\nАдреса: Київ, вул. Хрещатик, 1\nПн–Нд: 09:00–21:00' },
+  },
+  openInfo(key){
+    const data = this.infoContent[key];
+    document.getElementById('info-content').innerHTML = `
+      <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style="background:var(--grad-brand)">
+        <i data-lucide="${data.icon}" style="color:#07070b"></i>
+      </div>
+      <h3 class="font-display font-bold text-2xl mb-3">${data.title}</h3>
+      <p class="leading-relaxed whitespace-pre-line" style="color:var(--text-1)">${data.text}</p>
+    `;
+    Utils.refreshIcons();
+    const overlay = document.getElementById('info-overlay');
+    const modal = document.getElementById('info-modal');
+    overlay.classList.remove('pointer-events-none');
+    requestAnimationFrame(()=>{
+      overlay.style.opacity = '1';
+      modal.classList.remove('scale-95','opacity-0');
+    });
+  },
+  closeInfo(){
+    const overlay = document.getElementById('info-overlay');
+    const modal = document.getElementById('info-modal');
+    overlay.style.opacity = '0';
+    modal.classList.add('scale-95','opacity-0');
+    setTimeout(()=> overlay.classList.add('pointer-events-none'), 300);
+  },
+  closeAll(){
+    this.closeLeft(); this.closeCart(); this.closeInfo(); Search.close(); Checkout.close();
+  }
+};
+
+/* ================= ROUTER / SPA ================= */
+const Router = {
+  current:{ path:'/', params:{} },
+
+  parse(){
+    let hash = location.hash.replace(/^#/, '') || '/';
+    const [pathAndQuery] = [hash];
+    const [path, queryStr] = pathAndQuery.split('?');
+    const params = {};
+    if (queryStr){
+      new URLSearchParams(queryStr).forEach((v,k)=> params[k]=v);
+    }
+    return { path: path || '/', params };
+  },
+
+  go(path){
+    location.hash = path;
+  },
+
+  render(){
+    const { path, params } = this.parse();
+    this.current = { path, params };
+
+    Utils.qsa('[data-page]').forEach(p => p.classList.remove('active'));
+
+    let productId = null;
+    if (path.startsWith('/product/')) productId = path.split('/product/')[1];
+
+    if (path === '/' || path === ''){
+      Utils.qs('[data-page="home"]').classList.add('active');
+      Render.categoriesHome();
+      Render.grid('featured-grid', PRODUCTS.slice(0,4));
+    } else if (path === '/catalog'){
+      Utils.qs('[data-page="catalog"]').classList.add('active');
+      Catalog.activeCategory = params.cat || '';
+      Catalog.showDiscountOnly = params.discount === '1';
+      Render.categoryChips(Catalog.activeCategory);
+      Catalog.render();
+    } else if (productId){
+      Utils.qs('[data-page="product"]').classList.add('active');
+      this.current.params.id = productId;
+      ProductPage.render(productId);
+    } else if (path === '/favorites'){
+      Utils.qs('[data-page="favorites"]').classList.add('active');
+      FavoritesPage.render();
+    } else {
+      Utils.qs('[data-page="notfound"]').classList.add('active');
+    }
+
+    Drawers.closeAll();
+    window.scrollTo({ top:0, behavior:'auto' });
+    this.updateBottomNav(path, productId);
+    Utils.refreshIcons();
+  },
+
+  updateBottomNav(path, productId){
+    const map = { '/':'home', '/catalog':'catalog', '/favorites':'favorites' };
+    const active = map[path] || (productId ? 'catalog' : '');
+    Utils.qsa('.bnav-item').forEach(btn => btn.classList.toggle('active', btn.dataset.nav === active));
+  }
+};
+
+/* ================= ANIMATIONS (header scroll) ================= */
+const Animations = {
+  initHeaderScroll(){
+    const header = document.getElementById('site-header');
+    let lastY = 0;
+    window.addEventListener('scroll', Utils.debounce(()=>{
+      const y = window.scrollY;
+      header.classList.toggle('scrolled', y > 8);
+      lastY = y;
+    }, 30));
+  }
+};
+
+/* ================= EVENTS / INIT ================= */
+function initEvents(){
+  document.getElementById('btn-menu').addEventListener('click', Drawers.openLeft.bind(Drawers));
+  document.getElementById('left-overlay').addEventListener('click', Drawers.closeLeft.bind(Drawers));
+
+  document.getElementById('btn-cart').addEventListener('click', Drawers.openCart.bind(Drawers));
+  document.getElementById('cart-overlay').addEventListener('click', Drawers.closeCart.bind(Drawers));
+
+  document.getElementById('btn-favorites').addEventListener('click', ()=> Router.go('/favorites'));
+
+  document.getElementById('btn-search').addEventListener('click', Search.open.bind(Search));
+  document.getElementById('search-overlay').addEventListener('click', Search.close.bind(Search));
+  document.getElementById('search-input').addEventListener('input', Utils.debounce((e)=> Search.renderResults(e.target.value), 200));
+
+  document.getElementById('checkout-overlay').addEventListener('click', (e)=>{
+    if (e.target.id === 'checkout-overlay') Checkout.close();
+  });
+  document.getElementById('info-overlay').addEventListener('click', (e)=>{
+    if (e.target.id === 'info-overlay') Drawers.closeInfo();
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape') Drawers.closeAll();
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT'){ e.preventDefault(); Search.open(); }
+  });
+
+  window.addEventListener('hashchange', Router.render.bind(Router));
+}
+
+function init(){
+  Utils.refreshIcons();
+  Cart.updateBadge();
+  Favorites.updateBadge();
+  Animations.initHeaderScroll();
+  initEvents();
+  Router.render();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
