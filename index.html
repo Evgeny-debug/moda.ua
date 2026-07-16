@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVÀ STYL | Преміум Одяг</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #ffffff; --text: #1a1a1a; --accent: #c5a059; --overlay: rgba(0,0,0,0.5); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); overflow-x: hidden; }
+
+        /* Навігація */
+        header { padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: white; z-index: 100; border-bottom: 1px solid #eee; }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; cursor: pointer; }
+        .nav-icons { display: flex; gap: 20px; align-items: center; }
+        .btn-icon { cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+
+        /* Бічні панелі (Меню та Кошик) */
+        .sidebar { position: fixed; top: 0; right: -350px; width: 350px; height: 100%; background: white; z-index: 1000; padding: 40px; transition: 0.4s; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
+        .sidebar.active { right: 0; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--overlay); display: none; z-index: 999; backdrop-filter: blur(5px); }
+        .overlay.active { display: block; }
+        .close-btn { cursor: pointer; margin-bottom: 30px; display: block; text-align: right; font-size: 1.2rem; }
+
+        /* Героїчна секція */
+        .hero { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=2000'); background-size: cover; color: white; text-align: center; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 20px; }
+
+        /* Продукти */
+        .section { padding: 80px 5%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .card { border: 1px solid #f0f0f0; padding: 15px; transition: 0.3s; }
+        .card img { width: 100%; height: 350px; object-fit: cover; }
+        .card h3 { margin: 15px 0 5px; }
+        .btn-add { background: #1a1a1a; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; margin-top: 10px; }
+
+        /* Футер */
+        footer { padding: 40px; text-align: center; background: #fafafa; border-top: 1px solid #eee; }
+        .evs-credit { margin-top: 10px; font-size: 0.8rem; color: #888; }
+        .evs-credit a { color: var(--accent); font-weight: 600; }
+
+        @media (max-width: 600px) { .hero h1 { font-size: 2rem; } .sidebar { width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" onclick="closeAll()"></div>
+
+    <header>
+        <div class="logo">NOVÀ STYL</div>
+        <div class="nav-icons">
+            <span class="btn-icon" onclick="toggleMenu()">Меню</span>
+            <span class="btn-icon" onclick="toggleCart()">Кошик (0)</span>
+        </div>
+    </header>
+
+    <!-- Меню -->
+    <div id="menu-sidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleMenu()">✕</span>
+        <h2>Навігація</h2>
+        <ul style="list-style: none; margin-top: 30px;">
+            <li style="margin-bottom: 20px;"><a href="#">Нова колекція</a></li>
+            <li style="margin-bottom: 20px;"><a href="#">Жінки</a></li>
+            <li style="margin-bottom: 20px;"><a href="#">Чоловіки</a></li>
+            <li style="margin-bottom: 20px;"><a href="#">Про нас</a></li>
+        </ul>
+    </div>
+
+    <!-- Кошик -->
+    <div id="cart-sidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleCart()">✕</span>
+        <h2>Ваш кошик</h2>
+        <div style="margin-top: 40px; text-align: center; color: #666;">
+            Кошик порожній
+        </div>
+    </div>
+
+    <section class="hero">
+        <h1>Весна '24</h1>
+        <p>Відкрийте стиль у кожній деталі</p>
+    </section>
+
+    <section class="section">
+        <h2 style="margin-bottom: 40px; font-family: 'Playfair Display';">Бестселери</h2>
+        <div class="grid">
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1523381210434-27158be1f536" alt="Товар">
+                <h3>Тренч Класика</h3>
+                <p>3 500 грн</p>
+                <button class="btn-add">Додати в кошик</button>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b" alt="Товар">
+                <h3>Сукня вечірня</h3>
+                <p>4 200 грн</p>
+                <button class="btn-add">Додати в кошик</button>
+            </div>
+            <div class="card">
+                <img src="https://images.unsplash.com/photo-1509635037919-48c906c6b392" alt="Товар">
+                <h3>Піджак Oversize</h3>
+                <p>3 800 грн</p>
+                <button class="btn-add">Додати в кошик</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 NOVÀ STYL. Всі права захищені.</p>
+        <div class="evs-credit">
+            Розроблено EVS.pro — <a href="https://t.me/evsdev" target="_blank">@evsdev</a>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menu-sidebar').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('active');
+        }
+        function toggleCart() {
+            document.getElementById('cart-sidebar').classList.toggle('active');
+            document.querySelector('.overlay').classList.toggle('active');
+        }
+        function closeAll() {
+            document.getElementById('menu-sidebar').classList.remove('active');
+            document.getElementById('cart-sidebar').classList.remove('active');
+            document.querySelector('.overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
